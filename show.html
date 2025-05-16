@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <title>候補一覧</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body { text-align: center; font-family: sans-serif; background: #fceef2; }
+    .card { margin: 20px auto; padding: 10px; background: white; border-radius: 10px; width: 90%; max-width: 400px; box-shadow: 0 0 10px #ccc; }
+    img { width: 100%; border-radius: 10px; }
+    .message { margin-top: 10px; font-size: 18px; }
+  </style>
+</head>
+<body>
+  <div id="gallery"></div>
+
+  <script>
+    const prefecture = new URLSearchParams(window.location.search).get('pref') || '不明';
+
+    const profiles = [
+      { img: 'https://your-fc2-server.com/img1.jpg', msg: 'ひま〜 会いたいなっ' },
+      { img: 'https://your-fc2-server.com/img2.jpg', msg: 'だれでも大歓迎❤️' },
+      { img: 'https://your-fc2-server.com/img3.jpg', msg: 'えっちしよ？' },
+    ];
+
+    const container = document.getElementById('gallery');
+    profiles.forEach(profile => {
+      const div = document.createElement('div');
+      div.className = 'card';
+      div.innerHTML = `
+        <img src="${profile.img}">
+        <div class="message">${profile.msg}（${prefecture}）</div>
+      `;
+      div.addEventListener('click', () => {
+        window.location.href = 'chat.html';
+      });
+      container.appendChild(div);
+    });
+  </script>
+</body>
+</html>

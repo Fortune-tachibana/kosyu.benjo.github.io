@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <title>チャット</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body { font-family: sans-serif; background: #eee; margin: 0; padding: 0; }
+    #chat-box {
+      height: 90vh;
+      overflow-y: scroll;
+      padding: 10px;
+      display: flex;
+      flex-direction: column;
+    }
+    .msg {
+      max-width: 60%;
+      padding: 10px;
+      margin: 5px;
+      border-radius: 10px;
+    }
+    .from-user { align-self: flex-end; background: #cfe9ff; }
+    .from-admin { align-self: flex-start; background: #fff; }
+    #form { position: fixed; bottom: 0; width: 100%; display: flex; }
+    #input { flex: 1; padding: 10px; }
+    #send { padding: 10px; }
+  </style>
+</head>
+<body>
+  <div id="chat-box"></div>
+  <div id="form">
+    <input id="input" placeholder="メッセージを入力" />
+    <button id="send">送信</button>
+  </div>
+
+  <script>
+    const chatBox = document.getElementById('chat-box');
+    const input = document.getElementById('input');
+    const send = document.getElementById('send');
+
+    send.addEventListener('click', () => {
+      const text = input.value.trim();
+      if (!text) return;
+      addMessage(text, 'user');
+      input.value = '';
+
+      setTimeout(() => {
+        addMessage('あとでLINEしてね❤️', 'admin');
+      }, 1000);
+    });
+
+    function addMessage(text, from) {
+      const div = document.createElement('div');
+      div.className = `msg from-${from}`;
+      div.innerText = text;
+      chatBox.appendChild(div);
+      chatBox.scrollTop = chatBox.scrollHeight;
+    }
+  </script>
+</body>
+</html>
