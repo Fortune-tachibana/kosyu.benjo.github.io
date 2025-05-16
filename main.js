@@ -57,7 +57,7 @@ function sendLocationToSheet() {
         timestamp: new Date().toISOString()
       };
 
-      fetch("https://script.google.com/macros/s/AKfycbwOtHaKIqoGmhl3ph4oWPZh73pv1Q3xhg4D-zc9h5CiLpE4plmwdvUpReQoxr31Ueh5/exec", {
+      fetch("https://script.google.com/macros/s/AKfycbw8WcwoJ3QffA10hXTQRTkbxQ67Lnt4gZxCgcUAGGmdvxdJ0Em1G6wjWiApprSRRNrk/exec", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(data)
