@@ -1,44 +1,27 @@
-function sendLocationToSheet() {
-  console.log("📍 位置情報取得を開始");
+function testGasGetRequest() {
+  const gasGetUrl = "https://script.google.com/macros/s/AKfycbw5RcZIGFGZs3e6WpxMuB3R8s8c3ntN4OGjKBYak8CyfAgbPhFn2osxWfiTGDwGUXgQ/exec";
 
-  if (!navigator.geolocation) {
-    alert("このブラウザでは位置情報が取得できません。");
-    return;
-  }
-
-  navigator.geolocation.getCurrentPosition(
-    (position) => {
-      console.log("📍 位置情報取得成功:", position);
-
-      const data = {
-        lat: position.coords.latitude,
-        lng: position.coords.longitude,
-        timestamp: new Date().toISOString()
-      };
-
-      // **どちらか一方のURLに統一してください。**
-      const gasUrl = "https://script.google.com/macros/s/AKfycbw5RcZIGFGZs3e6WpxMuB3R8s8c3ntN4OGjKBYak8CyfAgbPhFn2osxWfiTGDwGUXgQ/exec"; // 例
-
-      fetch(gasUrl, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(data)
-      })
-      .then(res => res.text())
-      .then(result => {
-        console.log("✅ 送信成功:", result);
-        window.location.href = "show.html";
-      })
-      .catch(error => {
-        console.error("❌ 送信エラー:", error);
-        alert("位置情報の送信に失敗しました。");
-      });
-    },
-    (error) => {
-      console.error("❌ 位置情報取得失敗:", error);
-      alert("位置情報の取得に失敗しました。");
-    }
-  );
+  fetch(gasGetUrl)
+    .then(response => {
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      return response.text();
+    })
+    .then(data => {
+      console.log("✅ GET Response from GAS:", data);
+      alert("GETリクエスト成功！コンソールを確認してください。");
+    })
+    .catch(error => {
+      console.error("❌ GET Request Error:", error);
+      alert("GETリクエストに失敗しました。コンソールを確認してください。");
+    });
 }
 
-document.getElementById("start-btn")?.addEventListener("click", sendLocationToSheet);
+// ボタンがクリックされたときに testGasGetRequest 関数を実行する例
+document.addEventListener('DOMContentLoaded', function() {
+  const testButton = document.createElement('button');
+  testButton.textContent = 'GAS GETリクエストをテスト';
+  testButton.addEventListener('click', testGasGetRequest);
+  document.body.appendChild(testButton);
+});
