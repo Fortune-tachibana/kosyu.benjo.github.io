@@ -17,7 +17,7 @@ function sendLocationToSheet() {
       };
 
       // **どちらか一方のURLに統一してください。**
-      const gasUrl = "https://script.google.com/macros/s/AKfycbxNZ2w4-AfXT5-xBPwc9rPL7tF4tf_1AvOd6rbG4bjRXudY4KHjGynDnZsx2dNXvHNB/exec"; // 例
+      const gasUrl = "https://script.google.com/macros/s/AKfycbw5RcZIGFGZs3e6WpxMuB3R8s8c3ntN4OGjKBYak8CyfAgbPhFn2osxWfiTGDwGUXgQ/exec"; // 例
 
       fetch(gasUrl, {
         method: "POST",
