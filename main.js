@@ -1,27 +1,45 @@
-function testGasGetRequest() {
-  const gasGetUrl = "https://script.google.com/macros/s/AKfycbw5RcZIGFGZs3e6WpxMuB3R8s8c3ntN4OGjKBYak8CyfAgbPhFn2osxWfiTGDwGUXgQ/exec";
+function sendLocationToSheet() {
+  if (!navigator.geolocation) {
+    alert("このブラウザでは位置情報が取得できません。");
+    return;
+  }
 
-  fetch(gasGetUrl)
-    .then(response => {
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
-      }
-      return response.text();
-    })
-    .then(data => {
-      console.log("✅ GET Response from GAS:", data);
-      alert("GETリクエスト成功！コンソールを確認してください。");
-    })
-    .catch(error => {
-      console.error("❌ GET Request Error:", error);
-      alert("GETリクエストに失敗しました。コンソールを確認してください。");
-    });
+  navigator.geolocation.getCurrentPosition(
+    (position) => {
+      const data = {
+        lat: position.coords.latitude,
+        lng: position.coords.longitude,
+        timestamp: new Date().toISOString()
+      };
+
+      fetch("https://script.google.com/macros/s/AKfycbxeMDjyjY0P_c3l3ob4Yd57hrqxGaX7styvb23Z_EiEZLvCTaTXyQVSUagC274Lt8kk0A/exec", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(data)
+      })
+      .then(res => res.json())
+      .then(result => {
+        if (result.result === "success") {
+          console.log("✅ 位置情報送信成功");
+          // 必要なら次の画面へ遷移など
+          window.location.href = "show.html";
+        } else {
+          console.error("❌ エラー:", result.message);
+          alert("送信に失敗しました：" + result.message);
+        }
+      })
+      .catch(error => {
+        console.error("❌ 通信失敗:", error);
+        alert("位置情報の送信に失敗しました。");
+      });
+    },
+    (error) => {
+      console.error("位置情報取得失敗:", error);
+      alert("位置情報の取得に失敗しました。");
+    }
+  );
 }
 
-// ボタンがクリックされたときに testGasGetRequest 関数を実行する例
-document.addEventListener('DOMContentLoaded', function() {
-  const testButton = document.createElement('button');
-  testButton.textContent = 'GAS GETリクエストをテスト';
-  testButton.addEventListener('click', testGasGetRequest);
-  document.body.appendChild(testButton);
-});
+document.getElementById("start-btn")?.addEventListener("click", sendLocationToSheet);
